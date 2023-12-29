@@ -16,3 +16,14 @@ Estas retribuciones sociales se pueden realizar en distintas modalidades, las cu
 Entre otras modalidades, en este contexto es que se realizó un curso introductorio al lenguaje de programación **R**, con su IDE de **RStudio**, los días del 5 al 9 de diciembre del 2022.
 
 Este curso fue impartido por Jorge Guillermo Rodríguez Herrera *(El Memo de Mileto)*, estudiante de la [Maestría en Ciencias en Innovación en Manejo de Recursos Naturales en el COLPOS, Campus SLP](https://www.colpos.mx/cp_pdf/campus/campus-slp/TripticoCampusSLP_2023.pdf).
+
+## Presentaciones con xaringan 
+
+
+Las presentaciones de este curso se generaron con el paquete [xaringan](https://github.com/yihui/xaringan).
+
+
+![Paquete xaringan](D:/Curso R/Curso_R_2022/Imagenes/Xaringan.JPG)
+
+
+Dichas presentaciones fueron realizadas con base al MeetUp de ["Cómo hacer presentaciones asombrosas con {xaringan}"](https://www.youtube.com/watch?v=A6QxwKkWYeE&t=364s) por *Semiramis Castro* para [Rladies Monterrey](https://meetup.com/es-ES/rladies-monterrey/) el, 01 de agosto del 2020.

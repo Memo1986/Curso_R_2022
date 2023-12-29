@@ -1,0 +1,468 @@
+---
+title: "Curso de R"
+subtitle: "⚔<br/>Introducción a R"
+author: "El Memo de Mileto"
+institute: "UASLP"
+lang: es-MX
+toc: TRUE
+date: "(Fecha: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: 
+      - default
+      - rladies
+      - rladies
+    # seal: false
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+## Instalación y carga de las librerías
+
+Una de las grandes ventajas de usar R es la amplia gama de funcionalidades mediante paquetes o **librerías**, que tiene este lenguaje.
+
+**Los paquetes** son colecciones de funciones R, datos y código compilado en un formato bien definido. El directorio donde se almacenan los paquetes se llama biblioteca.
+
+ 
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+### Instalación de librerías
+
+
+Por ejemplo, en este curso vamos a necesitar la librearia **dplyr** y esta no está 
+instalada en R, entonces, se debe instalarla con todas sus dependencias. 
+
+Para ello es necesario emplear la función `install.packages()`
+```{r}
+# install.packages("dplyr", dependencies = T)
+```
+
+
+--
+
+
+### Carga de librerías
+
+Una vez instalado la librería, debe cargarse en la sesión de R para ser utilizado. Para ello, se ejecuta el comando:
+```{r}
+library(dplyr) 
+```
+
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+## Primeros pasos en **R**
+
+
+###  Crear Variables 
+
+
+Vamos a ver un ejemplo, como primer paso debemos conocer el signo de asignación
+que se usa en **R** el cual es **<-** o bien puede emplearse **=**.
+
+
+--
+
+
+Vamos a guardar el **"Hola Mundo"**, en la variable que se llame **hola_0**, 
+con con el asignador de **<-**
+```{r}
+# Crear una variable con el asignador <- 
+hola_0 <- "Hola Mundo"
+```
+
+
+--
+
+
+Vamos a guardar el **"Hola Mundo"**, en la variable que se llame **hola_0**, 
+con con el asignador de **=**
+```{r}
+# Crear una variable con el asignador =
+hola_1 = "Hola Mundo"
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Primeros pasos en **R**
+
+###  Crear Variables 
+
+
+Para llamar a las variables se puede emplear la función de `print()`
+```{r}
+# Llamar a la variable de hola_0
+print(hola_0)
+```
+
+
+--
+
+
+Otra opción es solo correr la variable con **Ctrl+Enter** o **Run**
+```{r}
+hola_0
+```
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+## Primeros pasos en **R**
+
+###  Tipos de datos
+
+Vamos a crear una variable de cada uno de los tipos de datos que tiene **R**. El 
+primer objeto a crear es de tipo **integer**, dicha variable se llamara **a**
+y se le va asignar el valor de **1** 
+```{r}
+a <- 1 # Número entero
+```
+
+
+Crear la variable de **b** y le asignamos el valor de **0.86**
+```{r}
+b <- 0.867 # Siempre punto 
+```
+
+
+Crear la variable de c y le asignamos el valor de **"Curso R"** 
+```{r}
+ c <- "Curso R"  # Siempre entre comillas 
+```
+
+
+Crear la variable de d y le asignamos el valor de **TRUE**
+```{r}
+d <- TRUE   # Siempre en mayúsculas
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Primeros pasos en **R**
+
+###  Tipos de datos
+
+Para saber que tipo de dato de cada variable, es necesario emplear la función de
+`class()`, y darle cada valor a la función
+```{r}
+class(a)
+class(b)
+```
+
+
+```{r}
+class(c)
+class(d)
+```
+
+
+
+Las operaciones en vectores, se realizan valor por valor y nos regresa otro 
+vector con los valores obtenidos de esa operación
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Primeros pasos en **R**
+
+### Operaciones aritméticas
+
+La operaciones aritméticas como  suma, resta, multiplicación, división, 
+exponenciación, división entera y módulo se realizan, respectivamente, mediante
+los símbolos 
+
+**+,  -, *,  /,  ^** 
+
+Vamos a crear las variables de **a_1, b_1** y **c_1** y les vamos asignar el 
+valor de **10, 25** y **30** respectivamente esto con el objetivo de para 
+realizar operaciones aritméticas. 
+```{r}
+# Definir tres variables
+a_1 <- 10
+b_1 <- 25
+c_1 <- 30
+```
+
+
+Se pueden realizar Operaciones básicas con variables, por ejemplo sumar las 
+variables de **a_1 + b_1** 
+```{r}
+a_1 + b_1 
+```
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Primeros pasos en **R**
+
+### Operaciones aritméticas
+
+Realizar la resta de **a_1 - c_1**
+```{r}
+a_1 - c_1   # resta
+```
+
+
+Realizar la multiplicación de **a_1 * b_1** y la división de **b_1 / c_1**
+```{r}
+a_1 * b_1 # multiplicación
+b_1 / c_1 # división
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Primeros pasos en **R**
+
+### Operaciones aritméticas
+
+En **R** al igual que en el lenguaje matemático se respeta la Jerarquía de 
+operaciones
+```{r}
+a_1+((b_1/c_1)*(c_1-a_1))*a_1 
+```
+
+
+--
+
+
+Paso por paso 
+```{r}
+25/30 # b_1/c_1
+```
+
+
+```{r}
+30-10 # c_1-a_1
+```
+
+
+```{r}
+0.8333333 * 20 #(b_1/c_1)*(c_1-a_1)
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Primeros pasos en **R**
+
+### Operaciones aritméticas
+
+En **R** al igual que en el lenguaje matemático se respeta la Jerarquía de 
+operaciones
+```{r}
+a_1+((b_1/c_1)*(c_1-a_1))*a_1 
+```
+
+
+
+```{r}
+16.66667 * 10 # ((b_1/c_1)*(c_1-a_1))*a_1 
+```
+
+
+```{r}
+166.6667 + 10 # a_1+((b_1/c_1)*(c_1-a_1))*a_1 
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Primeros pasos en **R**
+
+### Operaciones lógicas
+
+Para introducir datos boleanos, es decir, que tienen como salida **verdadero** o 
+**falso** utilizamos los operadores **<,>,==, >= o <=. !=, |**
+
+
+--
+
+
+¿Es **a_1** igual que **b_1**? 
+
+
+--
+
+
+
+```{r}
+a_1 == b_1
+```
+
+
+--
+
+
+¿Es **a_1** diferente que **b_1**? 
+
+
+--
+
+```{r}
+a_1 != b_1
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Primeros pasos en **R**
+
+### Operaciones lógicas
+
+Para introducir datos boleanos, es decir, que tienen como salida **verdadero** o 
+**falso** utilizamos los operadores **<,>,==, >= o <=. !=, |**
+
+
+--
+
+
+¿Es **c_1** mayor que **b_1**? 
+
+
+```{r}
+c_1 >= b_1
+```
+
+
+
+¿Es **a_1** menor que **b_1**? 
+
+
+
+```{r}
+a_1 <= b_1
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Primeros pasos en **R**
+
+### Operaciones lógicas
+
+También es posible emplear los operadores **|** y **&** los siguen estas reglas:
+
+      - | devuelve TRUE si alguno de los datos es TRUE
+      - & solo devuelve TRUE si ambos datos es TRUE
+      - | solo devuelve FALSE si ambos datos son FALSE
+      - & devuelve FALSE si alguno de los datos es FALSE
+
+--
+
+¿Es **a_1**  menor que **22** y **b_1** es mayor que **10**?
+
+
+--
+
+
+```{r}
+(a_1 < 22) & (b_1  > 10)
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Primeros pasos en **R**
+
+### Operaciones lógicas
+
+También es posible emplear los operadores **|** y **&** los siguen estas reglas:
+
+      - | devuelve TRUE si alguno de los datos es TRUE
+      - & solo devuelve TRUE si ambos datos es TRUE
+      - | solo devuelve FALSE si ambos datos son FALSE
+      - & devuelve FALSE si alguno de los datos es FALSE
+
+--
+
+¿Es **a_1**  menor que **9** y **b_1** es mayor que **10**?
+
+
+--
+
+
+```{r}
+(a_1 < 9) & (b_1  > 10)
+```
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Primeros pasos en **R**
+
+### Operaciones lógicas
+
+También es posible emplear los operadores **|** y **&** los siguen estas reglas:
+
+      - | devuelve TRUE si alguno de los datos es TRUE
+      - & solo devuelve TRUE si ambos datos es TRUE
+      - | solo devuelve FALSE si ambos datos son FALSE
+      - & devuelve FALSE si alguno de los datos es FALSE
+
+--
+
+¿Es **a_1** menor que **9** o **b_1** es mayor que **10**?
+
+
+--
+
+
+```{r}
+(a_1 < 9) | (b_1  > 10) 
+```
+
+
+
+---
+class: inverse, middle, center
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+
+# Gracias por su atención
+
+
+## https://github.com/Memo1986

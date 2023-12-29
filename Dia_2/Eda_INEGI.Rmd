@@ -1,0 +1,379 @@
+---
+title: "Análisis Exploratorio de Datos"
+subtitle: "Datos INEGI"
+author: "El Memo de Mileto"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# ¿Qué es Google Trends?
+
+
+Como su nombre indica, Google Trends es una herramienta que, en base a los datos registrados en el motor de búsqueda de Google, muestra de manera dinámica y gráfica la frecuencia de temas y términos de búqueda de los usuarios en determinado lapso de tiempo o región del mundo.
+Por así decirlo, mide la popularidad de cierto tema en un período concreto y en un lugar específico e incluso en determinada plataforma.
+
+
+## Importar librerías
+
+
+Importar librerias necesarias para este trabajo
+```{r, echo=TRUE, warning=FALSE, error=FALSE, message=FALSE}
+library(tidyverse)
+library(cowplot)
+library(ggplot2)
+library(sf)
+library(tmap)
+library(gt)
+library(tibble)
+library(knitr)
+library(kableExtra)
+library(DataExplorer)
+library(gganimate)
+library(dplyr)
+library(gtrendsR)
+library(RColorBrewer)
+library(wordcloud)
+library(wordcloud2)
+library(tm)
+```
+
+
+
+En este caso vamos a utilizar **tidyverse** y **cowplot**. La librería cowplot nos va a ayudar a colocar varias gráficas de forma fácil y ordenada en un sólo espacio [EDA de datos de INEGI](https://www.r-bloggers.com/2022/11/eda-de-datos-de-inegi/?fbclid=IwAR3YE0tO0uMth9to_9g4wf9sEJCzKHzJkDNymch4WjEGki2FgIDx23LjRpk).
+
+
+
+
+      - ggplot2 Que facilita la creación de gráficas con el sistema de capas 
+        (The Language of Graphics escrito por Leland Wilkinson, 2000)
+        
+      - dplyr que nos ayuda a mandar resultados de un proceso al siguiente 
+        utilizando los famosos %>%
+        
+      - tibble que facilita la manipulación de tablas, transformando los 
+        tradicionales data.frame de R a un formato mas amigable visualmente.
+        
+
+## Cargar los datos 
+
+
+Cargar los datos necesarios para este ejercicio [Fuente](https://www.r-bloggers.com/2022/11/eda-de-datos-de-inegi/?fbclid=IwAR3YE0tO0uMth9to_9g4wf9sEJCzKHzJkDNymch4WjEGki2FgIDx23LjRpk)
+```{r}
+# Extraer los datos
+path.to.files <- "https://raw.githubusercontent.com/teotenn/INEGI-export/master/"
+
+# Leer los datos por filar
+datos_cols <- read_csv(paste0(path.to.files, "exportations_activity_cols.csv"))
+```
+
+
+Revisar el tipo de dato de **datos_cols**
+```{r} 
+class(datos_cols)
+```
+
+
+Revisar las primeras 10 observaciones de los **datos_cols**
+```{r} 
+head(datos_cols, 12)
+```
+
+
+
+Revisar los nombres de **datos_cols**
+```{r}
+colnames(datos_cols)
+```
+
+
+
+
+Revisar las primeras 10 observaciones de los **datos_rows**
+```{r} 
+head(datos_cols, 10)
+```
+
+
+
+## Identificar valores ausentes o faltantes
+
+Los valores ausentes o faltantes influyen mucho a la hora de crear modelos, algunos algoritmos no aceptan observaciones incompletas o bien se ven muy influenciados por ellas, en este caso las Métricas de evaluación, no admiten valores faltantes, por lo que es necesario identifcar con cuantos N/A, cuenta nuetro data frame.
+
+Para identifica el número de datos ausentes por variable vamos a emplear la siguiente función
+
+
+```{r}
+plot_missing(
+  data    = datos_cols, 
+  title   = "Porcentaje de valores Faltantes por variable",
+  ggtheme = theme_bw(),
+  theme_config = list(legend.position = "none")
+)
+```
+
+
+
+Eliminar los datos faltes
+```{r}
+datos_cols_0 <- na.omit(datos_cols)
+```
+
+
+
+## Organizando los datos
+
+
+En este caso lo primero es seleccionar solo algunos de los datos que tiene este data frame
+para esto es necesario seleccionar las columnas de 1 s 5, de 21 a 23, 25 a 27
+
+
+        - 1 state	
+        - 2 year	
+        - 3 Exportaciones totales	
+        - 4 Industria alimentaria	
+        - 5 Industria de las bebidas y el tabaco	
+        - 21 Minería de minerales metálicos y no metálicos, excepto petróleo y gas
+        - 22 Curtido y acabado de cuero y piel, y fabricación de productos de cuero, piel 
+        - 23 Industria de la madera	
+        - 25 Fabricación de accesorios, aparatos eléctricos y equipo de generación de energía eléctrica	
+        - 26 Extracción de petróleo y gas
+        - 27 Fabricación de productos derivados del petróleo y del carbón
+
+
+Para esto vamos a emplear la función de `select()` y seleccionamos las columnas con 
+base a la númeración anterior
+```{r}
+datos_0 <- select(datos_cols, c(1,2,3,4,5,21,22,23,25,26,27))
+```
+
+
+
+Como segundo paso vamos cambiar los nombres de las variables, ya que son demasiado
+largos y puede generar problemas, para esto lo primero es generar un vector con 
+los nombres que se desean en el data frame de **datos_0**
+```{r}
+nombres <- c("Estado", "Year", "Totales", "Alimentaria", "Bebidas", "Mineria_Metal_Notal",
+             "Curtido_Piel", "Madera", "Electronicos", "Extraccion_Petroleo_Gas",
+             "Productos_Petroleo_Gas")
+nombres
+```
+
+
+
+Ahora vamos a usar la función de `names()` incorporando el data frame de **datos_0**
+y le asignamos el vector de **nombres**
+```{r}
+names(datos_0) <- nombres
+```
+
+
+El siguiente paso es realizar un `group_by()` por estado para generar un nuevo 
+data frame con el promedio de los 12 años (2007 - 2018) por estado.
+
+
+![](https://rsanchezs.gitbooks.io/rprogramming/content/chapter9/groupby.PNG){width='800px'}
+
+
+La función [group_by()](https://rsanchezs.gitbooks.io/rprogramming/content/chapter9/groupby.html) agrupa un conjunto de filas seleccionado en un conjunto de filas de resumen de acuerdo con los valores de una o más columnas o expresiones.
+
+
+
+La función `group_by()` es extremadamente útil trabajando en conjunción con la 
+función `summarise()`:
+
+
+      pollution %>%  group_by(city) %>% 
+           summarise(mean = mean(amount), sum = sum(amount), n = n())
+
+
+![](https://rsanchezs.gitbooks.io/rprogramming/content/chapter9/groupbySummarise.PNG){width='800px'}
+
+
+En este ejemplo vamos a agrupar por **Estado** y calcular la media de cada sector y 
+almacenarlo en la variable de **datos_1**
+```{r}
+datos_1 <- datos_0 %>%
+  group_by(Estado) %>%
+  summarise(Totales = mean(Totales), 
+                Alimentaria = mean(Alimentaria),
+                Bebidas = mean(Bebidas), 
+                Mineria_Metal_Notal = mean(Mineria_Metal_Notal),
+                Curtido_Piel = mean(Curtido_Piel), SW_mena = mean(Madera),
+                Electronicos = mean(Electronicos), Ext_P_G = mean(Extraccion_Petroleo_Gas),
+                Productos_P_G = mean(Productos_Petroleo_Gas)
+             )
+```
+
+
+Visualizar las 10 primeras observaciones de **datos_1**
+```{r}
+head(datos_1)
+```
+
+
+
+Visualizar los datos de forma interactiva
+```{r}
+DT::datatable(datos_1)
+```
+
+
+
+## Visualización
+
+La visualización de datos ha ganado espacio en diversas publicaciones y en las 
+últimas décadas ya constituye una disciplina en sí misma. 
+
+
+En este paso se realizara una visualización tus datos usando el paquete `ggplot2`. D
+
+e los muchos sistemas que posee R para hacer gráficos, ggplot2 es uno de los más
+elegantes y versátiles. Esto se debe a que ggplot2 implementa un sistema c
+oherente para describir y construir gráficos, 
+
+conocido como la gramática de gráficos. Con ggplot2 puedes hacer más cosas en 
+menor tiempo, aprendiendo un único sistema y aplicándolo en diferentes ámbitos.
+
+
+
+Generar grafico
+```{r}
+ggplot(datos_1) +
+      geom_bar(aes(y = Totales,
+                   x = Estado,
+                   fill = Totales),
+               stat = 'identity') 
+```
+
+
+
+
+Modificar el gráfico para poder dar un mejor diseño
+```{r}
+ggplot(datos_1) +
+      geom_bar(aes(y = Totales,
+                   x = reorder(Estado, Totales, FUN = abs),
+                   fill = Totales),
+               stat = 'identity') +
+      coord_flip()
+```
+
+
+```{r}
+ggplot(datos_1) +
+      geom_bar(aes(y = Totales,
+                   x = reorder(Estado, Totales, FUN = abs),
+                   fill = Totales),
+               stat = 'identity') +
+  labs(title = "Exportación media por Estado (2007 - 2018)",
+         x = "Estado") +
+        coord_flip()
+```
+
+
+Generar un grafico que muetsre el comportamiento de las exportaciones totales 
+atra vez del tiempo
+```{r}
+ggplot(dplyr::filter(datos_0, Estado == "Aguascalientes"),
+       aes(x = Year, y = Totales)) +
+    geom_line() +
+    geom_point() +
+    facet_wrap(~`Estado`) +
+    theme_minimal() +
+    transition_reveal(Year)+
+  coord_cartesian(clip = 'off') +
+  enter_fade() + 
+  exit_shrink()
+```
+
+
+
+```{r}
+dplyr::filter(datos_0, Estado == "Aguascalientes")
+```
+
+
+
+Crear un Boxplot en R
+```{r}
+ggplot(datos_1, aes(x = Estado, y = Totales, fill=Estado)) + 
+  geom_boxplot()
+```
+
+
+=  <   >
+```{r}
+ggplot(dplyr::filter(datos_1, Totales >= 30000000), aes(x = Estado, y = Totales, fill=Estado)) + 
+  geom_boxplot()
+```
+
+
+
+
+
+Como siguiente paso es necesario generar una union espacial, para esto es necesario
+primero buscar que claves se presentan en **estados** y en el data frame de **datos_1**
+```{r}
+datos_1$Cve_Ent <- as.integer(seq(1:32))
+```
+
+
+
+```{r}
+estados <- read_sf("Datos/Estados.shp")
+```
+
+
+
+
+```{r}
+estados$Ent_Cve
+```
+
+
+
+
+
+
+```{r}
+estados_1 <- inner_join(x = estados, y = datos_1, by = c("Ent_Cve" = "Cve_Ent"))
+```
+
+
+
+
+```{r}
+tmap_mode("view")
+tm_shape(estados_1) +
+  tm_fill(col = "Totales",
+          palette = "Oranges",
+          style = "cont",
+          contrast = c(0.1,1),
+          title = "Exportacion media por Estado (2007 - 2018)",
+          id = "Estado",
+          showNA = FALSE,
+          alpha = 0.8,
+          popup.vars = c( "Industria alimentaria" = "Alimentaria",
+                          "Exportaciones 2007-2018" = "Totales"
+                          # "Escorrentia Promedio 2011" = "Esc_mean_2011",
+                          # "Infiltracion Promedio 2011" = "Inf_mean_2011"
+                          ))+
+  tm_borders(col = "darkgray", lwd = 0.6)+
+  tm_basemap("OpenStreetMap")
+```
+
+
+
+
+
+Librerias usadas en este trabajo
+```{r}
+sessioninfo::package_info() %>% 
+  filter(attached==TRUE) %>% 
+  select(package, loadedversion, date, source) %>% 
+  gt() %>% 
+  tab_header(title='Paquetes utilizados',
+             subtitle='Versiones') %>% 
+  opt_align_table_header('left')
+```
+
