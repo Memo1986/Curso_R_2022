@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="es-MX" xml:lang="es-MX">
+  <head>
+    <title>Introducción a Google Trends</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="El Memo de Mileto" />
+    <script src="libs/header-attrs-2.24/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Introducción a Google Trends
+]
+.subtitle[
+## ⚔<br/>Introducción a R
+]
+.author[
+### El Memo de Mileto
+]
+.institute[
+### UASLP
+]
+.date[
+### (Fecha: 2023-12-29)
+]
+
+---
+
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+# ¿Qué es Google Trends?
+
+
+Como su nombre indica, **Google Trends** es una herramienta que, en base a los datos
+registrados en el motor de búsqueda de Google, muestra de manera dinámica y gráfica
+la frecuencia de temas y términos de búqueda de los usuarios en determinado 
+lapso de tiempo o región del mundo.
+
+Mide la popularidad de cierto tema en un período concreto y en  un lugar específico e incluso en determinada plataforma.
+
+**Google Trends** es una herramienta que nos permite explorar y analizar los 
+temas más populares que se buscan en **Google** comparando distintas palabras 
+clave.
+
+&lt;img src="https://i.blogs.es/db772e/google-trends-assistant/1366_2000.jpg" width="60%"
+alt="flores púrpuras"/&gt;
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+## ¿Para qué sirve Google Trends?
+
+Google Trends sirve para la persona qué necesite saber qué palabras clave está 
+buscando el usuario en función de mi objetivo.
+
+Así tenemos que:
+
+    - Para un Blogger, le permite saber qué está buscando la gente para ajustar
+      su contenido a ciertas búsquedas y dirigir tráfico con mayor facilidad.
+      
+    - Para un Social Media o Content Manager, la herramienta le posibilita 
+      conocer sobre los temas más buscados. Lo cual, le permite crear contenido
+      de alto valor y aumentar su engagement.
+      
+    - Para una marca, la herramienta le permite leer su posición de búsqueda 
+      frente a sus competidores y revisar su estrategia de ser necesario.
+      
+    - Para una empresa, ésta le informa sobre la posibilidad de diversificación
+      de producto, inversión en el negocio o expansión del negocio a otras 
+      regiones.
+       
+    - Para un emprendedor, Google Trends, le dota de información para la 
+      implementación de un negocio, en función del potencial mercado existente.
+      
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Cargar librerías
+
+
+Las librerías a implementar en este trabajo con las siguientes:
+
+```r
+library(tidyverse)
+library(cowplot)
+library(ggplot2)
+library(sf)
+library(tmap)
+library(gt)
+library(tibble)
+library(knitr)
+library(kableExtra)
+library(DataExplorer)
+library(gganimate)
+library(dplyr)
+library(gtrendsR)
+library(RColorBrewer)
+library(wordcloud)
+library(wordcloud2)
+library(tm)
+```
+
+
+&lt;img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqTDaOabehc2T2DAUhovQYBxkk6m8Ui4LaBjm3Wj2uP3-MN8-6L0npP4YKaxF9pD6TP78&amp;usqp=CAU" width="40%"
+alt="flores púrpuras"/&gt;
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+La librería **gtrendsR** nos permite consultar al API de *Google Trends* de forma 
+sencilla y rápida mediante la función **gtrends**. Esta es una consulta tipo:
+
+`gtrends(keyword = NA, geo = "", time = "today+5-y", gprop = c("web", "news", "images", "froogle", "youtube"), category = 0, hl = "en-US", low_search_volume = FALSE)`
+
+
+Veamos ahora qué posibilidades nos da cada uno de los parámetros de la consulta:
+
+     - keyword. Un vector de caracteres con las palabras clave que se quieren 
+       consultar en Google Trends. Por ejemplo:
+       
+`gtrends(c("Territorio", "UNAM", "UASLP"))`
+
+
+     - geo. Un vector de caracteres con los países o regiones geográficas que 
+       se quieren consultar. Estos códigos siguen el estándar ISO-3166-2. Por 
+       defecto tienen el valor all, para consultas globales. Por ejemplo 
+
+`gtrends("Soccer", c("MX", "US"))`
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+`gtrends(keyword = NA, geo = "", time = "today+5-y", gprop = c("web", "news", "images", "froogle", "youtube"), category = 0, hl = "en-US", low_search_volume = FALSE)`
+
+
+
+     - time. Un cadena de caracteres que especifica el período temporal de 
+       consulta. Por defecto son los últimos cinco años. Estos son sus posibles 
+       valores:
+       
+
+        - “now 1-H”. Última hora.”now 4-H”. Últimas cuatro horas.”now 1-d”. 
+          Último día.”now 7-d”. Últimos siete días.”today 1-m”. Últimos 30 
+          días.
+          
+        - ”today 3-m”. Últimos 90 días.”today 12-m”. Últimos 12 meses.
+        
+        - ”today+5-y”.
+        
+        - Últimos cinco años (por defecto).”all”. Todo desde el comienzo de 
+          Google Trends (2004).”Y-m-d Y-m-d”. Rango temporal entre dos fechas 
+          (ej.: “2010-01-01 2010-04-03”)
+        
+        
+    - gprop. Un cadena de texto definiendo el producto de Google para el cual 
+      se pide información. Las opciones válidas son: “web” (por defecto), 
+      “news”, “images”, “froogle” y “youtube”.`
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+
+`gtrends(keyword = NA, geo = "", time = "today+5-y", gprop = c("web", "news", "images", "froogle", "youtube"), category = 0, hl = "en-US", low_search_volume = FALSE)`
+
+
+     - hl. Una cadena de texto especificando el código ISO-639-1 y que puede 
+       ser seguido del código de país. Por defecto es hl=”en-US”. 
+       
+     - Para español es hl=”es”; para español de España: “es-ES”. Solo afecta a 
+       los resultados obtenidos en los temas o búsquedas relacionadas.
+     
+     - low_search_volume. Lógico. Se indica si se debe incluir o no en los 
+       resultados los de regiones de bajo volumen de búsquedas. 
+       
+     - Es muy útil ponerlo a true cuando estamos analizando palabras poco buscadas.
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+
+Vamos aprobar varios ejemplos de búsqueda en **gtrendsR**. por ejemplo la primera
+búsqueda sera la de la palabra clave de **UGTO** y **UASLP**
+
+```r
+ej_0 &lt;- gtrends(keyword= c("UGTO", "UASLP"),geo = "MX", time="all", 
+                low_search_volume = TRUE)
+```
+
+
+Vamos a revisar los resultados de esta busqueda, la pimer variable a revisar es 
+la de **interest_over_time (Interés en el tiempo)**, este data frame nos
+proporciona datos temporales de una o varias palabras clave. Esta lista 
+contiene los siguientes campos:
+
+    * date (fecha), de clase Date, en formato yyyy-mm-dd.
+    
+    * hits (Interés), de clase character, es el interés de la búsqueda, 
+    siendo
+    * 100 el momento de mayor interés y todos los demás valores relativos a él. 
+    * Es decir, si en septiembre de 2010 hubo un interés 100 y en enero de 2011
+      un interés 50, quiere decir que el interés por esa búsqueda en enero de 
+      2011 fue la mitad que en septiembre de 2010. 
+      
+    * keyword (palabra clave) e clase character, la palabra clave que ha sido 
+      buscada.
+      
+    * geo (localización), de clase character, puede ser world o un código de 
+      país.
+      
+    * gprop, de clase character, producto seleccionado. Por defecto es web.
+    
+    * category (categoría). Identificador de clase integer que identifica la 
+      categoría de búsqueda. Por defecto siempre será 0.
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+Revisar los datos de salida de nuestra primera busqueda
+Visualizar los primeros 5 datos de salida
+
+```r
+head(ej_0$interest_over_time, 5)
+```
+
+```
+##         date hits keyword geo time gprop category
+## 1 2004-01-01    6    UGTO  MX  all   web        0
+## 2 2004-02-01    7    UGTO  MX  all   web        0
+## 3 2004-03-01   27    UGTO  MX  all   web        0
+## 4 2004-04-01    7    UGTO  MX  all   web        0
+## 5 2004-05-01    5    UGTO  MX  all   web        0
+```
+
+Visualizar los primeros 5 datos de salida
+
+```r
+tail(ej_0$interest_over_time, 5)
+```
+
+```
+##           date hits keyword geo time gprop category
+## 476 2023-08-01    0   UASLP  MX  all   web        0
+## 477 2023-09-01    0   UASLP  MX  all   web        0
+## 478 2023-10-01    0   UASLP  MX  all   web        0
+## 479 2023-11-01    0   UASLP  MX  all   web        0
+## 480 2023-12-01   33   UASLP  MX  all   web        0
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+Graficar el comportamiento de las dos palabras clave 
+
+```r
+ej_0 %&gt;%
+  .$interest_over_time %&gt;%
+  ggplot(aes(x = date, y = hits)) +
+  geom_line(colour = "darkblue", size = 0.6) +
+  facet_wrap(~keyword)
+```
+
+![](Introduccion_Trend_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+
+
+```r
+ggplot(data=ej_0$interest_over_time) + aes(x=date, y=hits, color=keyword)+
+  geom_line()+ scale_colour_viridis_d(option = "viridis")+
+  labs(title = "Tendencia de busqueda", x="Tiempo", y="Frecuencia", subtitle = "Datos de noviembre 2004 - noviembre 2022 ")
+```
+
+![](Introduccion_Trend_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+
+Vamos a revisar el resultado de **Interés por región (interest_by_region)**,
+esta lista desglosa las búsquedas en las regiones de un país dado. Solo aparece
+si hemos especificado algún país en la búsqueda dentro del parámetro *geo*. 
+En caso contrario será *NULL*. Los datos que proporciona son:
+
+
+    * location, se trata de una región dentro de un país (geo). 
+    * El nombre aparecerá en inglés.
+    
+    * hits
+    
+    * keyword 
+    
+    * geo, el país al que pertenece la región 
+    
+    * gprop, por defecto web.
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+Revisar los datos de salida de nuestra primera busqueda
+
+Visualizar los primeros 5 datos de salida
+
+```r
+head(ej_0$interest_by_region, 5)
+```
+
+```
+##         location hits keyword geo gprop
+## 1     Guanajuato  100    UGTO  MX   web
+## 2      Querétaro    1    UGTO  MX   web
+## 3      Michoacán    1    UGTO  MX   web
+## 4        Jalisco    1    UGTO  MX   web
+## 5 Aguascalientes    1    UGTO  MX   web
+```
+
+
+Visualizar los primeros 5 datos de salida
+
+```r
+tail(ej_0$interest_by_region, 5)
+```
+
+```
+##    location hits keyword geo gprop
+## 60   Oaxaca        UASLP  MX   web
+## 61 Guerrero        UASLP  MX   web
+## 62 Tlaxcala        UASLP  MX   web
+## 63  Chiapas        UASLP  MX   web
+## 64   Sonora        UASLP  MX   web
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+
+Vamos a cambiar los datos de hits ya que lo marca como tipo **"character"**, 
+cuando debería ser **numeric**.
+
+```r
+ej_0$interest_by_region$hits[ej_0$interest_by_region$hits == "&lt;1"] &lt;- 0
+ej_0$interest_by_region$hits &lt;- as.numeric(ej_0$interest_by_region$hits)
+class(ej_0$interest_by_region$hits)
+```
+
+```
+## [1] "numeric"
+```
+
+Visualizar los primeros 5 datos de salida
+
+```r
+head(ej_0$interest_by_region, 5)
+```
+
+```
+##         location hits keyword geo gprop
+## 1     Guanajuato  100    UGTO  MX   web
+## 2      Querétaro    1    UGTO  MX   web
+## 3      Michoacán    1    UGTO  MX   web
+## 4        Jalisco    1    UGTO  MX   web
+## 5 Aguascalientes    1    UGTO  MX   web
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+Vamos a plotear la variable de **ej_0$interest_by_region** para visualizar cual
+es la tendencia de búsqueda por estado
+
+```r
+ggplot(ej_0$interest_by_region, aes(x=keyword, y = hits, fill = keyword)) +
+  geom_bar(stat="identity") +
+  facet_wrap(~location)+
+    labs(title = "Tendecia de busque", x = "Region", y = "Frecuencia", 
+         fill="Universidades", subtitle = "Datos generados en Google Trends")
+```
+
+![](Introduccion_Trend_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Leer datos espaciales 
+
+Vamos a leer el *.shp* de **Estados**, y guardarla en la variable de *estados*
+para realizar esto vamos a emplear la función de `read_sf()`
+
+```r
+estados &lt;- read_sf("Datos/Estados.shp")
+```
+
+
+Realizar un joing espacial uniendo la variable de **estados** con el data frame de
+**ej_0$interest_by_region** y la vamos a guardar en una nueva variable llamada
+**estados_1**
+
+```r
+estados_1 &lt;- inner_join(x = estados, y = ej_0$interest_by_region, by = c("Nom1" = "location"))
+```
+
+
+Visualizar las primeras 10 columnas de la nueva variable
+
+```r
+head(estados_1, 10)
+```
+
+```
+## Simple feature collection with 10 features and 8 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: -118.4076 ymin: 17.81287 xmax: -89.12123 ymax: 32.71865
+## Geodetic CRS:  WGS 84
+## # A tibble: 10 × 9
+##    CVE_ENT NOM_ENT   Ent_Cve Nom1                   geometry  hits keyword geo  
+##    &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;        &lt;MULTIPOLYGON [°]&gt; &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;
+##  1 01      Aguascal…       1 Agua… (((-102.2879 22.41649, -…     1 UGTO    MX   
+##  2 01      Aguascal…       1 Agua… (((-102.2879 22.41649, -…     1 UASLP   MX   
+##  3 02      Baja Cal…       2 Baja… (((-112.6638 28.41883, -…    NA UGTO    MX   
+##  4 02      Baja Cal…       2 Baja… (((-112.6638 28.41883, -…     0 UASLP   MX   
+##  5 03      Baja Cal…       3 Baja… (((-109.8946 22.87482, -…    NA UGTO    MX   
+##  6 03      Baja Cal…       3 Baja… (((-109.8946 22.87482, -…    NA UASLP   MX   
+##  7 04      Campeche        4 Camp… (((-91.9565 20.197, -91.…    NA UGTO    MX   
+##  8 04      Campeche        4 Camp… (((-91.9565 20.197, -91.…    NA UASLP   MX   
+##  9 05      Coahuila…       8 Coah… (((-102.3108 29.87695, -…    NA UGTO    MX   
+## 10 05      Coahuila…       8 Coah… (((-102.3108 29.87695, -…     0 UASLP   MX   
+## # ℹ 1 more variable: gprop &lt;chr&gt;
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Visualizar datos espaciales
+
+
+
+```r
+# tmap_mode("view")
+# tm_shape(dplyr::filter(estados_1, keyword == "UASLP")) +
+#   tm_fill(col = "hits",
+#           palette = "Oranges",
+#           style = "cont",
+#           contrast = c(0.1,1),
+#           title = "Poularidad UASLP",
+#           id = "Estado",
+#           showNA = FALSE,
+#           alpha = 0.8)+
+#   tm_borders(col = "darkgray", lwd = 0.6)+
+#   tm_basemap("OpenStreetMap")
+```
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+
+El segundo ejemplo de búsqueda en **gtrendsR**. seran las palabrsa clave de 
+**Claudia Sheinbaum** y **Marcelo Ebrard**
+
+```r
+ej_1 &lt;- gtrends(keyword= c("Claudia Sheinbaum", "Marcelo Ebrard"),geo = "MX", 
+                time="2018-01-01 2022-05-12", 
+                low_search_volume = TRUE)
+```
+
+
+Visualizar las primeras 10 observaciones del comportamiento en el timpo
+
+```r
+head(ej_1$interest_over_time)
+```
+
+```
+##         date hits           keyword geo                  time gprop category
+## 1 2018-01-07    9 Claudia Sheinbaum  MX 2018-01-01 2022-05-12   web        0
+## 2 2018-01-14   12 Claudia Sheinbaum  MX 2018-01-01 2022-05-12   web        0
+## 3 2018-01-21    8 Claudia Sheinbaum  MX 2018-01-01 2022-05-12   web        0
+## 4 2018-01-28    5 Claudia Sheinbaum  MX 2018-01-01 2022-05-12   web        0
+## 5 2018-02-04    6 Claudia Sheinbaum  MX 2018-01-01 2022-05-12   web        0
+## 6 2018-02-11    8 Claudia Sheinbaum  MX 2018-01-01 2022-05-12   web        0
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+
+Graficar el comportamiento de las dos palabras clave 
+
+```r
+ej_1 %&gt;%
+  .$interest_over_time %&gt;%
+  ggplot(aes(x = date, y = hits)) +
+  geom_line(colour = "darkblue", size = 0.6) +
+  facet_wrap(~keyword)
+```
+
+![](Introduccion_Trend_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+
+Vamos a comparar las dos tendencias en el mismo grafico de tiempo
+
+```r
+ggplot(data=ej_1$interest_over_time) + aes(x=date, y=hits, color=keyword)+
+  geom_line()+ scale_colour_viridis_d(option = "viridis")+
+  labs(title = "Tendencia de busqueda", x="Tiempo", y="Frecuencia", subtitle = "Datos de noviembre 2018 - noviembre 2022")
+```
+
+![](Introduccion_Trend_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+Vamos a cambiar los datos de hits ya que lo marca como tipo **"character"**, 
+cuando debería ser **numeric**.
+
+```r
+ej_1$interest_by_region$hits[ej_0$interest_by_region$hits == "&lt;1"] &lt;- 0
+ej_1$interest_by_region$hits &lt;- as.numeric(ej_0$interest_by_region$hits)
+class(ej_0$interest_by_region$hits)
+```
+
+```
+## [1] "numeric"
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+
+Vamos a plotear la variable de **ej_1$interest_by_region** para visualizar cual
+es la tendencia de búsqueda por estado
+
+```r
+ggplot(ej_1$interest_by_region, aes(x=keyword, y = hits, fill = keyword)) +
+  geom_bar(stat="identity") +
+  facet_wrap(~location)+
+    labs(title = "Tendecia de busque", x = "Region", y = "Frecuencia", 
+         fill="Universidades", subtitle = "Datos generados en Google Trends")
+```
+
+![](Introduccion_Trend_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+Vamosa generar una nube de palabras para identificar que esta palabras estan 
+relacionadas con nuestras palabras claves
+
+```r
+wordcloud(ej_1$related_queries$value, random.order = F,
+          random.color = F,
+          scale = c(4 ,2),
+          rot.per = 0.3,
+                   colors=brewer.pal(8, "Dark2"))
+```
+
+![](Introduccion_Trend_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Librerías instaladas
+
+Librerias usadas en este trabajo
+
+```r
+sessioninfo::package_info() %&gt;% 
+  filter(attached==TRUE) %&gt;% 
+  select(package, loadedversion, date, source) %&gt;% 
+  gt() %&gt;% 
+  tab_header(title='Paquetes utilizados',
+             subtitle='Versiones') %&gt;% 
+  opt_align_table_header('left')
+```
+
+<div id="tdebrlkdzb" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#tdebrlkdzb table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#tdebrlkdzb thead, #tdebrlkdzb tbody, #tdebrlkdzb tfoot, #tdebrlkdzb tr, #tdebrlkdzb td, #tdebrlkdzb th {
+  border-style: none;
+}
+
+#tdebrlkdzb p {
+  margin: 0;
+  padding: 0;
+}
+
+#tdebrlkdzb .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#tdebrlkdzb .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#tdebrlkdzb .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#tdebrlkdzb .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#tdebrlkdzb .gt_heading {
+  background-color: #FFFFFF;
+  text-align: left;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#tdebrlkdzb .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tdebrlkdzb .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#tdebrlkdzb .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#tdebrlkdzb .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#tdebrlkdzb .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#tdebrlkdzb .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#tdebrlkdzb .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#tdebrlkdzb .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#tdebrlkdzb .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#tdebrlkdzb .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#tdebrlkdzb .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#tdebrlkdzb .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#tdebrlkdzb .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#tdebrlkdzb .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tdebrlkdzb .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#tdebrlkdzb .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#tdebrlkdzb .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#tdebrlkdzb .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tdebrlkdzb .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#tdebrlkdzb .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#tdebrlkdzb .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tdebrlkdzb .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tdebrlkdzb .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#tdebrlkdzb .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tdebrlkdzb .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#tdebrlkdzb .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tdebrlkdzb .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#tdebrlkdzb .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tdebrlkdzb .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#tdebrlkdzb .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tdebrlkdzb .gt_left {
+  text-align: left;
+}
+
+#tdebrlkdzb .gt_center {
+  text-align: center;
+}
+
+#tdebrlkdzb .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#tdebrlkdzb .gt_font_normal {
+  font-weight: normal;
+}
+
+#tdebrlkdzb .gt_font_bold {
+  font-weight: bold;
+}
+
+#tdebrlkdzb .gt_font_italic {
+  font-style: italic;
+}
+
+#tdebrlkdzb .gt_super {
+  font-size: 65%;
+}
+
+#tdebrlkdzb .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#tdebrlkdzb .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#tdebrlkdzb .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#tdebrlkdzb .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#tdebrlkdzb .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#tdebrlkdzb .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#tdebrlkdzb .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    <tr class="gt_heading">
+      <td colspan="4" class="gt_heading gt_title gt_font_normal" style>Paquetes utilizados</td>
+    </tr>
+    <tr class="gt_heading">
+      <td colspan="4" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style>Versiones</td>
+    </tr>
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="package">package</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="loadedversion">loadedversion</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="date">date</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="source">source</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td headers="package" class="gt_row gt_left">cowplot</td>
+<td headers="loadedversion" class="gt_row gt_right">1.1.1</td>
+<td headers="date" class="gt_row gt_right">2020-12-30</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.1)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">DataExplorer</td>
+<td headers="loadedversion" class="gt_row gt_right">0.8.2</td>
+<td headers="date" class="gt_row gt_right">2020-12-15</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.1)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">dplyr</td>
+<td headers="loadedversion" class="gt_row gt_right">1.1.3</td>
+<td headers="date" class="gt_row gt_right">2023-09-03</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.1)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">forcats</td>
+<td headers="loadedversion" class="gt_row gt_right">1.0.0</td>
+<td headers="date" class="gt_row gt_right">2023-01-29</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.1)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">gganimate</td>
+<td headers="loadedversion" class="gt_row gt_right">1.0.8</td>
+<td headers="date" class="gt_row gt_right">2022-09-08</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.1)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">ggplot2</td>
+<td headers="loadedversion" class="gt_row gt_right">3.4.4</td>
+<td headers="date" class="gt_row gt_right">2023-10-12</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.2)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">gt</td>
+<td headers="loadedversion" class="gt_row gt_right">0.9.0</td>
+<td headers="date" class="gt_row gt_right">2023-03-31</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.1)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">gtrendsR</td>
+<td headers="loadedversion" class="gt_row gt_right">1.5.1</td>
+<td headers="date" class="gt_row gt_right">2022-05-23</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.2)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">kableExtra</td>
+<td headers="loadedversion" class="gt_row gt_right">1.3.4</td>
+<td headers="date" class="gt_row gt_right">2021-02-20</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.1)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">knitr</td>
+<td headers="loadedversion" class="gt_row gt_right">1.43</td>
+<td headers="date" class="gt_row gt_right">2023-05-25</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.1)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">lubridate</td>
+<td headers="loadedversion" class="gt_row gt_right">1.9.2</td>
+<td headers="date" class="gt_row gt_right">2023-02-10</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.1)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">NLP</td>
+<td headers="loadedversion" class="gt_row gt_right">0.2-1</td>
+<td headers="date" class="gt_row gt_right">2020-10-14</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.1)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">purrr</td>
+<td headers="loadedversion" class="gt_row gt_right">1.0.2</td>
+<td headers="date" class="gt_row gt_right">2023-08-10</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.1)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">RColorBrewer</td>
+<td headers="loadedversion" class="gt_row gt_right">1.1-3</td>
+<td headers="date" class="gt_row gt_right">2022-04-03</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.0)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">readr</td>
+<td headers="loadedversion" class="gt_row gt_right">2.1.4</td>
+<td headers="date" class="gt_row gt_right">2023-02-10</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.1)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">sf</td>
+<td headers="loadedversion" class="gt_row gt_right">1.0-14</td>
+<td headers="date" class="gt_row gt_right">2023-07-11</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.1)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">stringr</td>
+<td headers="loadedversion" class="gt_row gt_right">1.5.0</td>
+<td headers="date" class="gt_row gt_right">2022-12-02</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.1)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">tibble</td>
+<td headers="loadedversion" class="gt_row gt_right">3.2.1</td>
+<td headers="date" class="gt_row gt_right">2023-03-20</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.1)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">tidyr</td>
+<td headers="loadedversion" class="gt_row gt_right">1.3.0</td>
+<td headers="date" class="gt_row gt_right">2023-01-24</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.1)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">tidyverse</td>
+<td headers="loadedversion" class="gt_row gt_right">2.0.0</td>
+<td headers="date" class="gt_row gt_right">2023-02-22</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.1)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">tm</td>
+<td headers="loadedversion" class="gt_row gt_right">0.7-11</td>
+<td headers="date" class="gt_row gt_right">2023-02-05</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.2)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">tmap</td>
+<td headers="loadedversion" class="gt_row gt_right">3.3-3</td>
+<td headers="date" class="gt_row gt_right">2022-03-02</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.1)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">wordcloud</td>
+<td headers="loadedversion" class="gt_row gt_right">2.6</td>
+<td headers="date" class="gt_row gt_right">2018-08-24</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.2)</td></tr>
+    <tr><td headers="package" class="gt_row gt_left">wordcloud2</td>
+<td headers="loadedversion" class="gt_row gt_right">0.2.1</td>
+<td headers="date" class="gt_row gt_right">2018-01-03</td>
+<td headers="source" class="gt_row gt_left">CRAN (R 4.3.2)</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+
+
+---
+
+
+
+---
+class: inverse, middle, center
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+
+# Gracias por su atención
+
+
+## https://github.com/Memo1986
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

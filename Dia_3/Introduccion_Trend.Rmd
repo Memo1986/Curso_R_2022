@@ -1,0 +1,550 @@
+---
+title: "Introducción a Google Trends"
+subtitle: "⚔<br/>Introducción a R"
+author: "El Memo de Mileto"
+institute: "UASLP"
+lang: es-MX
+toc: TRUE
+date: "(Fecha: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: 
+      - default
+      - rladies
+      - rladies
+    # seal: false
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+# ¿Qué es Google Trends?
+
+
+Como su nombre indica, **Google Trends** es una herramienta que, en base a los datos
+registrados en el motor de búsqueda de Google, muestra de manera dinámica y gráfica
+la frecuencia de temas y términos de búqueda de los usuarios en determinado 
+lapso de tiempo o región del mundo.
+
+Mide la popularidad de cierto tema en un período concreto y en  un lugar específico e incluso en determinada plataforma.
+
+**Google Trends** es una herramienta que nos permite explorar y analizar los 
+temas más populares que se buscan en **Google** comparando distintas palabras 
+clave.
+
+<img src="https://i.blogs.es/db772e/google-trends-assistant/1366_2000.jpg" width="60%"
+alt="flores púrpuras"/>
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+## ¿Para qué sirve Google Trends?
+
+Google Trends sirve para la persona qué necesite saber qué palabras clave está 
+buscando el usuario en función de mi objetivo.
+
+Así tenemos que:
+
+    - Para un Blogger, le permite saber qué está buscando la gente para ajustar
+      su contenido a ciertas búsquedas y dirigir tráfico con mayor facilidad.
+      
+    - Para un Social Media o Content Manager, la herramienta le posibilita 
+      conocer sobre los temas más buscados. Lo cual, le permite crear contenido
+      de alto valor y aumentar su engagement.
+      
+    - Para una marca, la herramienta le permite leer su posición de búsqueda 
+      frente a sus competidores y revisar su estrategia de ser necesario.
+      
+    - Para una empresa, ésta le informa sobre la posibilidad de diversificación
+      de producto, inversión en el negocio o expansión del negocio a otras 
+      regiones.
+       
+    - Para un emprendedor, Google Trends, le dota de información para la 
+      implementación de un negocio, en función del potencial mercado existente.
+      
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Cargar librerías
+
+
+Las librerías a implementar en este trabajo con las siguientes:
+```{r, echo=TRUE, warning=FALSE, error=FALSE, message=FALSE}
+library(tidyverse)
+library(cowplot)
+library(ggplot2)
+library(sf)
+library(tmap)
+library(gt)
+library(tibble)
+library(knitr)
+library(kableExtra)
+library(DataExplorer)
+library(gganimate)
+library(dplyr)
+library(gtrendsR)
+library(RColorBrewer)
+library(wordcloud)
+library(wordcloud2)
+library(tm)
+```
+
+
+<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqTDaOabehc2T2DAUhovQYBxkk6m8Ui4LaBjm3Wj2uP3-MN8-6L0npP4YKaxF9pD6TP78&usqp=CAU" width="40%"
+alt="flores púrpuras"/>
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+La librería **gtrendsR** nos permite consultar al API de *Google Trends* de forma 
+sencilla y rápida mediante la función **gtrends**. Esta es una consulta tipo:
+
+`gtrends(keyword = NA, geo = "", time = "today+5-y", gprop = c("web", "news", "images", "froogle", "youtube"), category = 0, hl = "en-US", low_search_volume = FALSE)`
+
+
+Veamos ahora qué posibilidades nos da cada uno de los parámetros de la consulta:
+
+     - keyword. Un vector de caracteres con las palabras clave que se quieren 
+       consultar en Google Trends. Por ejemplo:
+       
+`gtrends(c("Territorio", "UNAM", "UASLP"))`
+
+
+     - geo. Un vector de caracteres con los países o regiones geográficas que 
+       se quieren consultar. Estos códigos siguen el estándar ISO-3166-2. Por 
+       defecto tienen el valor all, para consultas globales. Por ejemplo 
+
+`gtrends("Soccer", c("MX", "US"))`
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+`gtrends(keyword = NA, geo = "", time = "today+5-y", gprop = c("web", "news", "images", "froogle", "youtube"), category = 0, hl = "en-US", low_search_volume = FALSE)`
+
+
+
+     - time. Un cadena de caracteres que especifica el período temporal de 
+       consulta. Por defecto son los últimos cinco años. Estos son sus posibles 
+       valores:
+       
+
+        - “now 1-H”. Última hora.”now 4-H”. Últimas cuatro horas.”now 1-d”. 
+          Último día.”now 7-d”. Últimos siete días.”today 1-m”. Últimos 30 
+          días.
+          
+        - ”today 3-m”. Últimos 90 días.”today 12-m”. Últimos 12 meses.
+        
+        - ”today+5-y”.
+        
+        - Últimos cinco años (por defecto).”all”. Todo desde el comienzo de 
+          Google Trends (2004).”Y-m-d Y-m-d”. Rango temporal entre dos fechas 
+          (ej.: “2010-01-01 2010-04-03”)
+        
+        
+    - gprop. Un cadena de texto definiendo el producto de Google para el cual 
+      se pide información. Las opciones válidas son: “web” (por defecto), 
+      “news”, “images”, “froogle” y “youtube”.`
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+
+`gtrends(keyword = NA, geo = "", time = "today+5-y", gprop = c("web", "news", "images", "froogle", "youtube"), category = 0, hl = "en-US", low_search_volume = FALSE)`
+
+
+     - hl. Una cadena de texto especificando el código ISO-639-1 y que puede 
+       ser seguido del código de país. Por defecto es hl=”en-US”. 
+       
+     - Para español es hl=”es”; para español de España: “es-ES”. Solo afecta a 
+       los resultados obtenidos en los temas o búsquedas relacionadas.
+     
+     - low_search_volume. Lógico. Se indica si se debe incluir o no en los 
+       resultados los de regiones de bajo volumen de búsquedas. 
+       
+     - Es muy útil ponerlo a true cuando estamos analizando palabras poco buscadas.
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+
+Vamos aprobar varios ejemplos de búsqueda en **gtrendsR**. por ejemplo la primera
+búsqueda sera la de la palabra clave de **UGTO** y **UASLP**
+```{r}
+ej_0 <- gtrends(keyword= c("UGTO", "UASLP"),geo = "MX", time="all", 
+                low_search_volume = TRUE)
+```
+
+
+Vamos a revisar los resultados de esta busqueda, la pimer variable a revisar es 
+la de **interest_over_time (Interés en el tiempo)**, este data frame nos
+proporciona datos temporales de una o varias palabras clave. Esta lista 
+contiene los siguientes campos:
+
+    * date (fecha), de clase Date, en formato yyyy-mm-dd.
+    
+    * hits (Interés), de clase character, es el interés de la búsqueda, 
+    siendo
+    * 100 el momento de mayor interés y todos los demás valores relativos a él. 
+    * Es decir, si en septiembre de 2010 hubo un interés 100 y en enero de 2011
+      un interés 50, quiere decir que el interés por esa búsqueda en enero de 
+      2011 fue la mitad que en septiembre de 2010. 
+      
+    * keyword (palabra clave) e clase character, la palabra clave que ha sido 
+      buscada.
+      
+    * geo (localización), de clase character, puede ser world o un código de 
+      país.
+      
+    * gprop, de clase character, producto seleccionado. Por defecto es web.
+    
+    * category (categoría). Identificador de clase integer que identifica la 
+      categoría de búsqueda. Por defecto siempre será 0.
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+Revisar los datos de salida de nuestra primera busqueda
+Visualizar los primeros 5 datos de salida
+```{r}
+head(ej_0$interest_over_time, 5)
+```
+
+Visualizar los primeros 5 datos de salida
+```{r}
+tail(ej_0$interest_over_time, 5)
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+Graficar el comportamiento de las dos palabras clave 
+```{r, warning=FALSE, fig.height = 5}
+ej_0 %>%
+  .$interest_over_time %>%
+  ggplot(aes(x = date, y = hits)) +
+  geom_line(colour = "darkblue", size = 0.6) +
+  facet_wrap(~keyword)
+```
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+
+```{r, warning=FALSE, fig.height = 5}
+ggplot(data=ej_0$interest_over_time) + aes(x=date, y=hits, color=keyword)+
+  geom_line()+ scale_colour_viridis_d(option = "viridis")+
+  labs(title = "Tendencia de busqueda", x="Tiempo", y="Frecuencia", subtitle = "Datos de noviembre 2004 - noviembre 2022 ")
+```
+
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+
+Vamos a revisar el resultado de **Interés por región (interest_by_region)**,
+esta lista desglosa las búsquedas en las regiones de un país dado. Solo aparece
+si hemos especificado algún país en la búsqueda dentro del parámetro *geo*. 
+En caso contrario será *NULL*. Los datos que proporciona son:
+
+
+    * location, se trata de una región dentro de un país (geo). 
+    * El nombre aparecerá en inglés.
+    
+    * hits
+    
+    * keyword 
+    
+    * geo, el país al que pertenece la región 
+    
+    * gprop, por defecto web.
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+Revisar los datos de salida de nuestra primera busqueda
+
+Visualizar los primeros 5 datos de salida
+```{r}
+head(ej_0$interest_by_region, 5)
+```
+
+
+Visualizar los primeros 5 datos de salida
+```{r}
+tail(ej_0$interest_by_region, 5)
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+
+Vamos a cambiar los datos de hits ya que lo marca como tipo **"character"**, 
+cuando debería ser **numeric**.
+```{r}
+ej_0$interest_by_region$hits[ej_0$interest_by_region$hits == "<1"] <- 0
+ej_0$interest_by_region$hits <- as.numeric(ej_0$interest_by_region$hits)
+class(ej_0$interest_by_region$hits)
+```
+
+Visualizar los primeros 5 datos de salida
+```{r}
+head(ej_0$interest_by_region, 5)
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+Vamos a plotear la variable de **ej_0$interest_by_region** para visualizar cual
+es la tendencia de búsqueda por estado
+```{r, warning=FALSE, fig.height = 5}
+ggplot(ej_0$interest_by_region, aes(x=keyword, y = hits, fill = keyword)) +
+  geom_bar(stat="identity") +
+  facet_wrap(~location)+
+    labs(title = "Tendecia de busque", x = "Region", y = "Frecuencia", 
+         fill="Universidades", subtitle = "Datos generados en Google Trends")
+```
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Leer datos espaciales 
+
+Vamos a leer el *.shp* de **Estados**, y guardarla en la variable de *estados*
+para realizar esto vamos a emplear la función de `read_sf()`
+```{r}
+estados <- read_sf("Datos/Estados.shp")
+```
+
+
+Realizar un joing espacial uniendo la variable de **estados** con el data frame de
+**ej_0$interest_by_region** y la vamos a guardar en una nueva variable llamada
+**estados_1**
+```{r}
+estados_1 <- inner_join(x = estados, y = ej_0$interest_by_region, by = c("Nom1" = "location"))
+```
+
+
+Visualizar las primeras 10 columnas de la nueva variable
+```{r}
+head(estados_1, 10)
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Visualizar datos espaciales
+
+
+```{r}
+# tmap_mode("view")
+# tm_shape(dplyr::filter(estados_1, keyword == "UASLP")) +
+#   tm_fill(col = "hits",
+#           palette = "Oranges",
+#           style = "cont",
+#           contrast = c(0.1,1),
+#           title = "Poularidad UASLP",
+#           id = "Estado",
+#           showNA = FALSE,
+#           alpha = 0.8)+
+#   tm_borders(col = "darkgray", lwd = 0.6)+
+#   tm_basemap("OpenStreetMap")
+```
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+
+El segundo ejemplo de búsqueda en **gtrendsR**. seran las palabrsa clave de 
+**Claudia Sheinbaum** y **Marcelo Ebrard**
+```{r}
+ej_1 <- gtrends(keyword= c("Claudia Sheinbaum", "Marcelo Ebrard"),geo = "MX", 
+                time="2018-01-01 2022-05-12", 
+                low_search_volume = TRUE)
+```
+
+
+Visualizar las primeras 10 observaciones del comportamiento en el timpo
+```{r}
+head(ej_1$interest_over_time)
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+
+Graficar el comportamiento de las dos palabras clave 
+```{r, warning=FALSE, fig.height = 5}
+ej_1 %>%
+  .$interest_over_time %>%
+  ggplot(aes(x = date, y = hits)) +
+  geom_line(colour = "darkblue", size = 0.6) +
+  facet_wrap(~keyword)
+```
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+
+Vamos a comparar las dos tendencias en el mismo grafico de tiempo
+```{r, warning=FALSE, fig.height = 5}
+ggplot(data=ej_1$interest_over_time) + aes(x=date, y=hits, color=keyword)+
+  geom_line()+ scale_colour_viridis_d(option = "viridis")+
+  labs(title = "Tendencia de busqueda", x="Tiempo", y="Frecuencia", subtitle = "Datos de noviembre 2018 - noviembre 2022")
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+Vamos a cambiar los datos de hits ya que lo marca como tipo **"character"**, 
+cuando debería ser **numeric**.
+```{r}
+ej_1$interest_by_region$hits[ej_0$interest_by_region$hits == "<1"] <- 0
+ej_1$interest_by_region$hits <- as.numeric(ej_0$interest_by_region$hits)
+class(ej_0$interest_by_region$hits)
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+
+Vamos a plotear la variable de **ej_1$interest_by_region** para visualizar cual
+es la tendencia de búsqueda por estado
+```{r, warning=FALSE, fig.height = 5}
+ggplot(ej_1$interest_by_region, aes(x=keyword, y = hits, fill = keyword)) +
+  geom_bar(stat="identity") +
+  facet_wrap(~location)+
+    labs(title = "Tendecia de busque", x = "Region", y = "Frecuencia", 
+         fill="Universidades", subtitle = "Datos generados en Google Trends")
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## El paquete gtrendsR
+
+Vamosa generar una nube de palabras para identificar que esta palabras estan 
+relacionadas con nuestras palabras claves
+```{r, warning=FALSE, fig.height = 5}
+wordcloud(ej_1$related_queries$value, random.order = F,
+          random.color = F,
+          scale = c(4 ,2),
+          rot.per = 0.3,
+                   colors=brewer.pal(8, "Dark2"))
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Librerías instaladas
+
+Librerias usadas en este trabajo
+```{r}
+sessioninfo::package_info() %>% 
+  filter(attached==TRUE) %>% 
+  select(package, loadedversion, date, source) %>% 
+  gt() %>% 
+  tab_header(title='Paquetes utilizados',
+             subtitle='Versiones') %>% 
+  opt_align_table_header('left')
+```
+
+
+---
+
+
+
+---
+class: inverse, middle, center
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+
+# Gracias por su atención
+
+
+## https://github.com/Memo1986
