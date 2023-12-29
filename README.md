@@ -23,7 +23,7 @@ Este curso fue impartido por Jorge Guillermo Rodríguez Herrera *(El Memo de Mil
 Las presentaciones de este curso se generaron con el paquete [xaringan](https://github.com/yihui/xaringan).
 
 
-![Paquete xaringan](D:/Repositorios_GitHub/Curso_R_2022/Imagenes/Xaringan.JPG)
+![Paquete xaringan](https://img.mp.itc.cn/upload/20170213/dd12ebf3eaf0415a851f15ed147102bb_th.jpeg)
 
 
 Dichas presentaciones fueron realizadas con base al MeetUp de ["Cómo hacer presentaciones asombrosas con {xaringan}"](https://www.youtube.com/watch?v=A6QxwKkWYeE&t=364s) por *Semiramis Castro* para [Rladies Monterrey](https://meetup.com/es-ES/rladies-monterrey/) el, 01 de agosto del 2020.
@@ -35,6 +35,6 @@ Dichas presentaciones fueron realizadas con base al MeetUp de ["Cómo hacer pres
 Se empleó la librería de [gtrends](https://dgarcia-eu.github.io/SocialDataScience/1_Introduction/017_gtrendsR/gtrendsR.html), para realizar consultas y descargar de datos, con el objetivo de poder almacenar dicha información  en data frames, para generar gráficos y mapas en r.
 
 
-![Paquete gtrends](D:/Repositorios_GitHub/Curso_R_2022/Imagenes/gtrends.JPG)
+![Paquete gtrends](https://www.rubenvezzoli.online/wp-content/uploads/2019/07/googletrendsR.jpg)
 
 
