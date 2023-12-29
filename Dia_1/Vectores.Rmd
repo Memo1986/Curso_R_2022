@@ -1,0 +1,339 @@
+---
+title: "Curso de R"
+subtitle: "⚔<br/> Introducción a R (Vectores)"
+author: "El Memo de Mileto"
+institute: "UASLP"
+lang: es-MX
+toc: TRUE
+date: "(Fecha: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: 
+      - default
+      - rladies
+      - rladies
+    # seal: false
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+## ¿Qué es un vector?
+
+
+Un vector es la estructura de datos más sencilla en **R**. Un vector es una colección
+de uno o más datos del mismo tipo. Los vectores tienen dos principales 
+propiedades el tipo y el largo.
+
+
+--
+
+
+### Crear un Vector
+
+Para crear vectores se emplea la instrucción de **`c()`**, que es combinar o 
+concatenar.
+
+Crear un vector con el nombre de v0 donde se le asignen los valores de 
+```{r}
+v0 <- c(1, 2, 3, 4, 5, 6)
+```
+
+--
+
+Imprimir el valor del **v0**
+```{r}
+v0
+```
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+
+Visualizar la clase del **v0**, con la función **class()**
+```{r}
+class(v0)
+```
+
+
+--
+
+
+Asignar las letras de *A, B, C, D* al vector con nombre v1
+
+Como estas letras son de tipo **character**, siembre deben ir entre **""**
+```{r}
+v1 <- c("A", "B", "C", "D") # Asignar los valores al vector
+v1 # Llamar al vector v1
+class(v1) # Ver el tipo de clase del vector v1
+```
+
+--
+
+Crear tres nuevos vectores *a_1, b_1* y *c_1*, y asignarles el valor de *10, 20*
+y *30* respectivamente
+```{r}
+# Crear tres nuevas variables
+a_1 <- 10
+b_1 <- 20
+c_1 <- 30
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+## Crear un nuevo vector con vectores existentes
+
+
+Asignarle las variables de *a_1, b_1* y *c_1*, al vector *v2*
+```{r}
+v2 <- c(a_1, b_1, c_1)
+```
+
+--
+
+Llamar al *v2*
+```{r}
+v2
+```
+
+
+Visualizar la clase de *v2*
+```{r}
+class(v2)
+```
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+# ¿Pregunta?
+
+
+--
+
+### ¿Qué pasaría si se mezclan varios tipos de datos en un vector?
+
+--
+
+Por ejemplo, mezclar una clase *lógica (FALSE)*, un *numérico (a_1)*, un *character 
+(B)*, y un *integer (4.00)*
+
+--
+
+
+```{r}
+# Crear el vector v3 y añadirle los valores de FALSE, a_1, "B", 4.00
+v3 <- c(FALSE, a_1, "B", 4.00)
+```
+
+--
+
+Llamar al *v3*
+```{r}
+v3
+```
+
+
+--
+
+Revisar la clase del *v3*
+
+--
+
+```{r}
+class(v3)
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Seleccionar valores y Realizar operaciones aritméticas con vectores
+
+### Seleccionar elementos en un vector
+
+
+Vamos a seleccionar el valor **25** del vector **v2**
+
+--
+
+```{r}
+v2[2]
+```
+
+
+
+Vamos a selccionar el character de **"D"** del vector **v1**
+
+
+--
+
+
+```{r}
+v1[4]
+```
+
+
+--
+
+Para la mayoría de selecciones de datos en **R**, se emplean los **[]** y la 
+posición del valor a seleccionar
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+## Seleccionar valores y Realizar operaciones aritméticas con vectores
+
+### Operaciones aritméticas en un vector
+
+Podemos realizar operaciones aritméticas con los elementos de un vector como 
+restarle o sumarle un número a cada elemento, multiplicar cada elemento por un 
+número dado o elevar cada elemento a una cierta potencia
+
+```{r}
+v0
+```
+
+
+--
+
+
+Sumarle 5 al **v0**
+
+
+--
+
+
+```{r}
+v0 + 5   # Suma
+```
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Seleccionar valores y Realizar operaciones aritméticas con vectores
+
+### Operaciones aritméticas en un vector
+
+
+Restarle 5 al al **v0**
+```{r}
+v0 - 5   # Resta
+```
+
+
+Multiplicar al **v0** * 2
+```{r}
+v0 * 2   # multiplicación
+```
+
+
+Las operaciones en vectores, se realizan valor por valor y nos regresa otro 
+vector con los valores obtenidos de esa operación
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+## Seleccionar valores y Realizar operaciones aritméticas con vectores
+
+### Operaciones lógicas 
+
+
+Al aplicar operaciones logicas, obtenemos un vector de **TRUE** o **FALSE**, uno 
+para  cada elemento comparado.
+
+
+--
+
+
+```{r}
+v2
+```
+
+
+--
+
+
+Vamos a revisar que valores de *v2* son mayores a 12
+
+
+--
+
+
+```{r}
+v2 > 12
+```
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Seleccionar valores y Realizar operaciones aritméticas con vectores
+
+### Operaciones lógicas 
+
+Vamos a revisar que valores de *v2* son mayores a 31
+
+--
+
+
+```{r}
+v2 < 31
+```
+
+
+
+--
+
+
+Vamos a revisar que valores de *v2* son mayores a 31
+
+
+--
+
+
+```{r}
+v2 == 10
+```
+
+
+Las operaciones lógicas solo tendran dos valores de salida  
+
+
+---
+class: inverse, middle, center
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+
+# Gracias por su atención
+
+
+## https://github.com/Memo1986

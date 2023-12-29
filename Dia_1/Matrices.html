@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="es-MX" xml:lang="es-MX">
+  <head>
+    <title>Curso de R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="El Memo de Mileto" />
+    <script src="libs/header-attrs-2.24/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Curso de R
+]
+.subtitle[
+## ⚔<br/> Introducción a R (Matrices)
+]
+.author[
+### El Memo de Mileto
+]
+.institute[
+### UASLP
+]
+.date[
+### (Fecha: 2023-12-29)
+]
+
+---
+
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+## ¿Qué es una Matriz?
+
+Las matrices pueden ser descritas como vectores multidimensionales. Al 
+igual que un vector, únicamente pueden contener datos de un sólo tipo, pero 
+además de largo, tienen más dimensiones.
+
+Las matrices son, por lo tanto, una estructura con forma rectangular, con 
+renglones y columnas.
+
+
+--
+
+
+### Crear una Matriz
+
+Para crear matrices se emple la intrucción de matrix(). La función `matrix()`, 
+dicha función acepta tres argumentos, **data**, **nrow** y **ncol**. 
+
+Con los ultimos argumentos especificamos el número de renglones y columnas que 
+tendrá nuestra matriz.
+
+Crear dos vectores **v0** y **v1** donde se le asignen los valores del **1** al **6** 
+al primero y los valores de **10** a **13**, al segundo
+
+```r
+v0 &lt;- c(1,2,3,4,5,6, 7, 8)
+v1 &lt;- c(10, 11, 12, 13)
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+## Crear una Matriz
+
+Vamos a combinar los vectores **v0** y **v1**, esto con la función `matrix()`
+
+```r
+# Crear una matriz
+m0 &lt;-  matrix(v0, v1)
+```
+
+```
+## Warning in matrix(v0, v1): data length [8] is not a sub-multiple or multiple of
+## the number of rows [10]
+```
+
+```r
+m0
+```
+
+```
+##       [,1]
+##  [1,]    1
+##  [2,]    2
+##  [3,]    3
+##  [4,]    4
+##  [5,]    5
+##  [6,]    6
+##  [7,]    7
+##  [8,]    8
+##  [9,]    1
+## [10,]    2
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+## Crear una Matriz
+
+Vamos a combinar los vectores **v0** y **v1**, esto con la función `matrix()`, pero 
+ahora especificando el número de **filas 2**, y el número de **columnas 3**
+
+```r
+# Crear una matriz
+m1 &lt;-  matrix(v0, v1, nrow = 4, ncol = 3)
+```
+
+```
+## Warning in matrix(v0, v1, nrow = 4, ncol = 3): data length [8] is not a
+## sub-multiple or multiple of the number of columns [3]
+```
+
+```r
+m1
+```
+
+```
+##      [,1] [,2] [,3]
+## [1,]    1    2    3
+## [2,]    4    5    6
+## [3,]    7    8    1
+## [4,]    2    3    4
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+## Crear una Matriz
+
+Vamos a combinar los vectores **v0** y **v1**, esto con la función `matrix()`, pero
+vamos a anidar la función de `c()` con  **4 filas**, y  **3 columnas**
+
+```r
+# Crear una matriz
+m2 &lt;-  matrix(c(v0, v1), nrow = 4, ncol = 3)
+m2
+```
+
+```
+##      [,1] [,2] [,3]
+## [1,]    1    5   10
+## [2,]    2    6   11
+## [3,]    3    7   12
+## [4,]    4    8   13
+```
+
+--
+
+Crear una matriz con dos filas y dos columnas incorporando cuatro valores
+
+```r
+m3 &lt;- matrix(c(10,11,12,13), nrow = 2, ncol = 2)
+m3
+```
+
+```
+##      [,1] [,2]
+## [1,]   10   12
+## [2,]   11   13
+```
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+# Operaciones con matricez
+
+
+Al igual que los vectores se pueden realizar operaciones aritméticas con las matricez
+por ejemplo vamos a multiplicar la **m2** * **2**
+
+```r
+m4 &lt;- m2 * 2
+```
+
+
+--
+
+
+
+```r
+m4
+```
+
+```
+##      [,1] [,2] [,3]
+## [1,]    2   10   20
+## [2,]    4   12   22
+## [3,]    6   14   24
+## [4,]    8   16   26
+```
+
+
+--
+
+
+Para visulizar las dimensiones de un matriz es posible emplear la instrucción 
+de `dim()`
+
+```r
+dim(m3)
+```
+
+```
+## [1] 2 2
+```
+
+```r
+dim(m4)
+```
+
+```
+## [1] 4 3
+```
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Seleccionar valores y Realizar operaciones aritméticas con matricez
+
+### Seleccionar elementos en una matriz
+
+Para seleccionar elementos en una **matriz[fila, columna]**
+
+Vamos a seleccionar el valor **12** del vector **m4** 
+
+```r
+m4[2,2]
+```
+
+```
+## [1] 12
+```
+
+
+--
+
+
+Vamos a seleccionar el valor **2** del vector **m4**
+
+```r
+m4[1,1]
+```
+
+```
+## [1] 2
+```
+
+
+
+Para la mayoría de selecciones de datos en **R**, se emplean los **[]** y la 
+posición del valor a seleccionar
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Seleccionar valores y Realizar operaciones aritméticas con matrices
+
+### Operaciones aritméticas en un vector
+
+Podemos realizar operaciones aritméticas con los elementos seleccionados de una matriz 
+
+```r
+m4
+```
+
+```
+##      [,1] [,2] [,3]
+## [1,]    2   10   20
+## [2,]    4   12   22
+## [3,]    6   14   24
+## [4,]    8   16   26
+```
+
+
+--
+
+
+Sumarle 2 a la posición de la fila 2 y la columna 3 de la **m4**
+
+--
+
+
+
+```r
+m4[2,3] + 2  # Suma
+```
+
+```
+## [1] 24
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Seleccionar valores y Realizar operaciones aritméticas con vectores
+### Operaciones lógicas 
+
+Vamos a revisar que valores de **m4** son mayores a *31*
+
+--
+
+
+
+```r
+m4 &lt; 31
+```
+
+```
+##      [,1] [,2] [,3]
+## [1,] TRUE TRUE TRUE
+## [2,] TRUE TRUE TRUE
+## [3,] TRUE TRUE TRUE
+## [4,] TRUE TRUE TRUE
+```
+
+
+--
+
+
+Vamos a revisar que valores de **m4** son mayores *12*
+
+
+--
+
+
+
+```r
+m4 &gt; 12
+```
+
+```
+##       [,1]  [,2] [,3]
+## [1,] FALSE FALSE TRUE
+## [2,] FALSE FALSE TRUE
+## [3,] FALSE  TRUE TRUE
+## [4,] FALSE  TRUE TRUE
+```
+
+
+
+---
+class: inverse, middle, center
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+
+# Gracias por su atención
+
+
+## https://github.com/Memo1986
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

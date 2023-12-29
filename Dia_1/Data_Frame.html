@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es-MX" xml:lang="es-MX">
+  <head>
+    <title>Curso de R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="El Memo de Mileto" />
+    <script src="libs/header-attrs-2.24/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Curso de R
+]
+.subtitle[
+## ⚔<br/> Introducción a R (Data Frame)
+]
+.author[
+### El Memo de Mileto
+]
+.institute[
+### UASLP
+]
+.date[
+### (Fecha: 2023-12-29)
+]
+
+---
+
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+## ¿Qué es un Data Frame?
+
+Los data frames son estructuras de datos de dos dimensiones (rectangulares) que 
+pueden contener datos de diferentes tipos, por lo tanto, son heterogéneas.
+
+Esta estructura de datos es la más usada para realizar análisis de datos.
+
+Podemos entender a los data frames como una versión más flexible de una matriz.
+Mientras que en una matriz todas las celdas deben contener datos del mismo tipo,
+los renglones de un data frame admiten datos de distintos tipos, pero sus 
+columnas conservan la restricción de contener datos de un sólo tipo.
+
+
+--
+
+
+### Crear un Data Frame
+
+Una forma sencilla de hacerlo es a partir de vectores, por ejemplo, vamos a crear
+tres vectores, uno con el nombre de *6 profesionistas*, otro con su formación y 
+el ultimo con el *número de años* de experiencia laboral
+
+```r
+nombre &lt;- c("Carolina", "Alejandro", "Alberto", "Karen", "Fernanda", "Carlos")
+formacion &lt;- c("Sociología", "Contador", "Agrónomo", "Química", 
+               "Antropóloga", "Geógrafo")
+experiencia &lt;- c(2, 4, 1, 3, 1, 4)
+```
+
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+### Crear un Data Frame
+
+Vamos a crear un data frame con los 3 vectores anteriores, esto mediante la 
+instrucción o funcion de `data.frame()` y se va almacenar en la variable de **datos**
+
+```r
+# Crear un data frame
+datos = data.frame(nombre, formacion, experiencia)
+print(datos)
+```
+
+```
+##      nombre   formacion experiencia
+## 1  Carolina  Sociología           2
+## 2 Alejandro    Contador           4
+## 3   Alberto    Agrónomo           1
+## 4     Karen     Química           3
+## 5  Fernanda Antropóloga           1
+## 6    Carlos    Geógrafo           4
+```
+
+
+--
+
+
+Otra manera de crear un data frame es crear datos dentro de la función de `data.frame()`:
+
+```r
+df &lt;- data.frame(
+  "entero" = 1:4, 
+  "factor" = c("a", "b", "c", "d"), 
+  "numero" = c(1.2, 3.4, 4.5, 5.6),
+  "cadena" = as.character(c("a", "b", "c", "d"))
+)
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+### Crear un Data Frame
+
+
+Visualizar el df con la función de `print()`
+
+```r
+print(df)
+```
+
+```
+##   entero factor numero cadena
+## 1      1      a    1.2      a
+## 2      2      b    3.4      b
+## 3      3      c    4.5      c
+## 4      4      d    5.6      d
+```
+
+--
+
+Ahora vamos a revisar la estructura del data frame de **datos**, esto mediante
+la función de `str()`
+
+```r
+# Obtener la estructura de un data frame dado
+str(datos)
+```
+
+```
+## 'data.frame':	6 obs. of  3 variables:
+##  $ nombre     : chr  "Carolina" "Alejandro" "Alberto" "Karen" ...
+##  $ formacion  : chr  "Sociología" "Contador" "Agrónomo" "Química" ...
+##  $ experiencia: num  2 4 1 3 1 4
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+### Seleccionar valores y Realizar operaciones aritméticas con Data frames
+
+### Seleccionar columnas en un data frame
+
+
+Para seleccionar una variable (Columna) específica dentro del data.frame 
+utilizamos el símbolo **$** después del nombre de la variable a seleccionar o 
+
+```r
+# llamar a la columna de entero
+df$entero 
+```
+
+```
+## [1] 1 2 3 4
+```
+
+
+Vamos a seleccionar la columna de numero
+
+```r
+df$numero
+```
+
+```
+## [1] 1.2 3.4 4.5 5.6
+```
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Seleccionar valores y Realizar operaciones aritméticas con Data frames
+
+### Seleccionar filas en un data frame
+
+
+Para seleccionar una observación (Fila) específica dentro del data.frame 
+utilizamos **[]** y la posición que deseamos, en este caso queremos los observaciones
+de la fila dos de todas las columnas de **datos**
+
+
+```r
+# Para extraer las dos primeras filas de todas las variables de un data frame 
+datos[2,]
+```
+
+```
+##      nombre formacion experiencia
+## 2 Alejandro  Contador           4
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+### Seleccionar valores y Realizar operaciones aritméticas con Data frames
+
+### Seleccionar filas en un data frame
+
+
+Llamar las observaciones de la fila dos a la tres, de las columnas 1 y 2
+
+```r
+datos[2:3,1:2]
+```
+
+```
+##      nombre formacion
+## 2 Alejandro  Contador
+## 3   Alberto  Agrónomo
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+### Seleccionar valores y Realizar operaciones aritméticas con Data frames
+
+### Agregar columnas a un data frame
+
+
+Para agregar una nueva columna a un data frame utilizamos el símbolo **$**
+después del nombre de la nueva columna que se va a incorporar y los valores 
+correspondientes a la nueva variable
+
+En este ejemplo vamos a crear la columnas de *edades*, con los valores de 
+**26,30,31,28,27 y 32**
+
+```r
+datos$edades &lt;-c (26,30,31,28,27,32)
+datos
+```
+
+```
+##      nombre   formacion experiencia edades
+## 1  Carolina  Sociología           2     26
+## 2 Alejandro    Contador           4     30
+## 3   Alberto    Agrónomo           1     31
+## 4     Karen     Química           3     28
+## 5  Fernanda Antropóloga           1     27
+## 6    Carlos    Geógrafo           4     32
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+### Seleccionar valores y Realizar operaciones aritméticas con Data frames
+
+### Agregar y borrar columnas a un data frame
+
+
+Para borrar columnas de un data frame es necesario seleccionar las variables que
+se desean conservar en un data frame.
+
+Primero agregamos dos nuevas columnas **colores** y **pasatiempos**
+
+```r
+datos$colores &lt;-c ("rojo","azul","naranja","morado","amarillo","verde")
+datos$pasatiempos &lt;-c ("Pintar", "Viajar","Nadar", "Viajar","Leer","Viajar")
+datos
+```
+
+```
+##      nombre   formacion experiencia edades  colores pasatiempos
+## 1  Carolina  Sociología           2     26     rojo      Pintar
+## 2 Alejandro    Contador           4     30     azul      Viajar
+## 3   Alberto    Agrónomo           1     31  naranja       Nadar
+## 4     Karen     Química           3     28   morado      Viajar
+## 5  Fernanda Antropóloga           1     27 amarillo        Leer
+## 6    Carlos    Geógrafo           4     32    verde      Viajar
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+### Seleccionar valores y Realizar operaciones aritméticas con Data frames
+
+### Agregar y borrar columnas a un data frame
+
+
+Para borrar columnas de un data frame es necesario seleccionar las variables que
+se desean conservar en un data frame.
+
+Eliminamos las filas con base a su posición que tienen, en este caso se eliminan
+la columna **5** y  **6**
+
+```r
+# Eliminar filas por número de un marco de datos dado.
+datos &lt;- subset(datos, select = -c(5, 6))
+datos
+```
+
+```
+##      nombre   formacion experiencia edades
+## 1  Carolina  Sociología           2     26
+## 2 Alejandro    Contador           4     30
+## 3   Alberto    Agrónomo           1     31
+## 4     Karen     Química           3     28
+## 5  Fernanda Antropóloga           1     27
+## 6    Carlos    Geógrafo           4     32
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Seleccionar valores y Realizar operaciones aritméticas con vectores
+
+### Operaciones aritméticas en un vector
+
+Para realizar operaciones aritméticas, es necesario seleccionar la columna o variable 
+a modificar, y realizar el proceso solo para esa columna
+
+```r
+datos$experiencia &lt;- datos$experiencia *2
+datos
+```
+
+```
+##      nombre   formacion experiencia edades
+## 1  Carolina  Sociología           4     26
+## 2 Alejandro    Contador           8     30
+## 3   Alberto    Agrónomo           2     31
+## 4     Karen     Química           6     28
+## 5  Fernanda Antropóloga           2     27
+## 6    Carlos    Geógrafo           8     32
+```
+
+
+Las operaciones en vectores, se realizan valor por valor y nos regresa otro 
+vector con los valores obtenidos de esa operación
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+### Exportar e importar un DF
+
+Podemos guardar los datos en formato .txt con el comando `write.table()`. 
+
+Se debe especificar el nombre del archivo así como el tipo de separación de los
+datos
+
+```r
+write.table(datos, file = "Datos/datos_df0.txt", sep = ",", col.names = TRUE)
+```
+
+--
+
+
+Para guardarlo como .csv se emplea la función de `write.csv()`
+
+```r
+write.csv(datos, file = 'Datos/datos_df1.csv', row.names = FALSE)
+```
+
+
+--
+
+
+Para poder llamar una base de datos empleamos `read.table()` si es en formato .txt. 
+
+```r
+datos_0 &lt;-read.table("Datos/datos_df0.txt", header = TRUE, sep = ",")
+```
+
+
+Podemos llamar un .csv con `read.csv()`
+
+```r
+datos_1 &lt;- read.csv("Datos/datos_df1.csv")
+```
+
+
+
+Podemos llamar un .csv con `read.csv()`
+
+```r
+datos_2 &lt;- read.csv("D:/GEE/datos_df1.csv")
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+### Exportar e importar un DF
+
+Por ultimo revisamos los datos
+
+```r
+print(datos_0)
+```
+
+```
+##      nombre   formacion experiencia edades
+## 1  Carolina  Sociología           4     26
+## 2 Alejandro    Contador           8     30
+## 3   Alberto    Agrónomo           2     31
+## 4     Karen     Química           6     28
+## 5  Fernanda Antropóloga           2     27
+## 6    Carlos    Geógrafo           8     32
+```
+
+
+---
+class: inverse, middle, center
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+
+# Gracias por su atención
+
+
+## https://github.com/Memo1986
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+"nombre","formacion","experiencia","edades"
+"1","Carolina","Sociología",4,26
+"2","Alejandro","Contador",8,30
+"3","Alberto","Agrónomo",2,31
+"4","Karen","Química",6,28
+"5","Fernanda","Antropóloga",2,27
+"6","Carlos","Geógrafo",8,32

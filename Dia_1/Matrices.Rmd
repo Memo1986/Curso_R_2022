@@ -1,0 +1,244 @@
+---
+title: "Curso de R"
+subtitle: "⚔<br/> Introducción a R (Matrices)"
+author: "El Memo de Mileto"
+institute: "UASLP"
+lang: es-MX
+toc: TRUE
+date: "(Fecha: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    css: 
+      - default
+      - rladies
+      - rladies
+    # seal: false
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+## ¿Qué es una Matriz?
+
+Las matrices pueden ser descritas como vectores multidimensionales. Al 
+igual que un vector, únicamente pueden contener datos de un sólo tipo, pero 
+además de largo, tienen más dimensiones.
+
+Las matrices son, por lo tanto, una estructura con forma rectangular, con 
+renglones y columnas.
+
+
+--
+
+
+### Crear una Matriz
+
+Para crear matrices se emple la intrucción de matrix(). La función `matrix()`, 
+dicha función acepta tres argumentos, **data**, **nrow** y **ncol**. 
+
+Con los ultimos argumentos especificamos el número de renglones y columnas que 
+tendrá nuestra matriz.
+
+Crear dos vectores **v0** y **v1** donde se le asignen los valores del **1** al **6** 
+al primero y los valores de **10** a **13**, al segundo
+```{r}
+v0 <- c(1,2,3,4,5,6, 7, 8)
+v1 <- c(10, 11, 12, 13)
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+## Crear una Matriz
+
+Vamos a combinar los vectores **v0** y **v1**, esto con la función `matrix()`
+```{r}
+# Crear una matriz
+m0 <-  matrix(v0, v1)
+m0
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+## Crear una Matriz
+
+Vamos a combinar los vectores **v0** y **v1**, esto con la función `matrix()`, pero 
+ahora especificando el número de **filas 2**, y el número de **columnas 3**
+```{r}
+# Crear una matriz
+m1 <-  matrix(v0, v1, nrow = 4, ncol = 3)
+m1
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+## Crear una Matriz
+
+Vamos a combinar los vectores **v0** y **v1**, esto con la función `matrix()`, pero
+vamos a anidar la función de `c()` con  **4 filas**, y  **3 columnas**
+```{r}
+# Crear una matriz
+m2 <-  matrix(c(v0, v1), nrow = 4, ncol = 3)
+m2
+```
+
+--
+
+Crear una matriz con dos filas y dos columnas incorporando cuatro valores
+```{r}
+m3 <- matrix(c(10,11,12,13), nrow = 2, ncol = 2)
+m3
+```
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+# Operaciones con matricez
+
+
+Al igual que los vectores se pueden realizar operaciones aritméticas con las matricez
+por ejemplo vamos a multiplicar la **m2** * **2**
+```{r}
+m4 <- m2 * 2
+```
+
+
+--
+
+
+```{r}
+m4
+```
+
+
+--
+
+
+Para visulizar las dimensiones de un matriz es posible emplear la instrucción 
+de `dim()`
+```{r}
+dim(m3)
+dim(m4)
+```
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Seleccionar valores y Realizar operaciones aritméticas con matricez
+
+### Seleccionar elementos en una matriz
+
+Para seleccionar elementos en una **matriz[fila, columna]**
+
+Vamos a seleccionar el valor **12** del vector **m4** 
+```{r}
+m4[2,2]
+```
+
+
+--
+
+
+Vamos a seleccionar el valor **2** del vector **m4**
+```{r}
+m4[1,1]
+```
+
+
+
+Para la mayoría de selecciones de datos en **R**, se emplean los **[]** y la 
+posición del valor a seleccionar
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Seleccionar valores y Realizar operaciones aritméticas con matrices
+
+### Operaciones aritméticas en un vector
+
+Podemos realizar operaciones aritméticas con los elementos seleccionados de una matriz 
+```{r}
+m4
+```
+
+
+--
+
+
+Sumarle 2 a la posición de la fila 2 y la columna 3 de la **m4**
+
+--
+
+
+```{r}
+m4[2,3] + 2  # Suma
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Seleccionar valores y Realizar operaciones aritméticas con vectores
+### Operaciones lógicas 
+
+Vamos a revisar que valores de **m4** son mayores a *31*
+
+--
+
+
+```{r}
+m4 < 31
+```
+
+
+--
+
+
+Vamos a revisar que valores de **m4** son mayores *12*
+
+
+--
+
+
+```{r}
+m4 > 12
+```
+
+
+
+---
+class: inverse, middle, center
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+
+# Gracias por su atención
+
+
+## https://github.com/Memo1986

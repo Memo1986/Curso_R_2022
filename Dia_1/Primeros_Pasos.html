@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="es-MX" xml:lang="es-MX">
+  <head>
+    <title>Curso de R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="El Memo de Mileto" />
+    <script src="libs/header-attrs-2.24/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Curso de R
+]
+.subtitle[
+## ⚔<br/>Introducción a R
+]
+.author[
+### El Memo de Mileto
+]
+.institute[
+### UASLP
+]
+.date[
+### (Fecha: 2023-12-29)
+]
+
+---
+
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+## ¿Qué es R?
+
+
+R es un lenguaje de programación y entorno computacional dedicado a la estadística.
+
+Decimos que es un lenguaje de programación porque nos permite dar instrucciones, usando código, a nuestros equipos de cómputo para que realicen tareas específicas
+
+
+![R](Imagenes/cf7a88401b2bb414dbd7008927c712da.jpg)
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+class: inverse
+
+## ¿Qué es R?
+
+Fue desarrollado por Robert Gentleman y Ross Ihaka, este legunaje tiene sus orígenes en S, un lenguaje de programación creado en los Laboratorios Bell de Estados Unidos.
+
+S y sus estándares son propiedad de los Laboratorios Bell, lo cual restringe su uso, Ross Ihaka y Robert Gentleman, de la Universidad de Auckland en Nueva Zelanda decidieron crear una implementación abierta y gratuita de S
+
+Gentleman e Ihaka, lo llamaron R por que es la letra inicial de sus nombres.
+
+
+
+&lt;p style = 'text-align:center;'&gt;
+![R](Imagenes/R_2.jpg)
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## ¿Por que usar R?
+
+--
+1.Licencia Pública General de GNU
+    - Por lo que es software libre y de código abierto
+--
+2.Es multiplataforma
+
+    - Windows
+    - Linux
+    - OSX
+    - Macintosh
+--
+
+3.Cuenta con un potente análisis estadístico y gráfico
+
+--
+
+4.Consume pocos recursos informáticos
+
+--
+
+5.R está actualizado gracias a que tiene una activa comunidad. Solo en CRAN hay cerca de 10,000 paquetes (funcionalidad adicional de R creadas creada por la comunidad).
+
+--
+
+6.Es un lenguaje en crecimiento y con mucha popularidad (El índice TIOBE)
+
+---
+class: inverse
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## [Indice TIOBE](https://www.tiobe.com/tiobe-index/)
+
+&lt;p style = 'text-align:center;'&gt;
+![](Imagenes/TIOBE.png)
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## [¿Qué se puede hacer con R?](hhttps://www.revista.unam.mx/2019v20n3/que-puede-hacer-el-software-r-para-resolver-tus-problemas/)
+
+R tiene un amplio margen de utilización que va desde :
+
+     - La ciencia a la economía 
+     
+     - La medicina 
+     
+     - La ingeniería
+     
+     - Las ciencias sociales
+     
+     - Las ciencias ambientales
+     
+     - Las ciencias de la tierra
+
+https://allezcannes.shinyapps.io/Soccer_squads/?_ga=2.250308357.2043760768.1669951634-1391768815.1669951634
+
+https://vac-lshtm.shinyapps.io/ncov_tracker/?_ga=2.237751939.2043760768.1669951634-1391768815.1669951634
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+class: inverse
+## [¿Quién usa R?](https://bookdown.org/jboscomendoza/r-principiantes4/quien-usa-r.html)
+
+
+Se debe principalmente a que permite responder preguntas mediante el uso de datos de forma efectiva, y como es un lenguaje abierto y gratuito, facilita compartir código y crear nuevas herramientas.
+
+     - Facebook para analizar la manera en que sus usuarios interactúan con sus 
+       muros de publicaciones para así determinar qué contenido mostrarles.
+
+     - Google para analizar la efectividad las campañas de publicidad 
+       implementadas en sus servicios, por ejemplo, los anuncios pagados que te 
+       aparecen cuando “googleas” algo.
+
+     - Microsoft adquirió y ahora desarrolla una versión propia de R llamada
+       OpenR, que ha hecho disponible para uso general del público
+
+&lt;p style = 'text-align:center;'&gt;
+![R](Imagenes/fac.jpg)
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## Instalar R
+
+El sitio oficial de CRAN, en el que encontrarás más información sobre este repositorio es el siguiente :
+
+ - R para Windows : https://cran.r-project.org/bin/windows/base/
+
+&lt;p style = 'text-align:center;'&gt;
+![R](Imagenes/Descarga.jpg)
+
+
+---
+class: inverse
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+## Instalar [R Studio](https://bookdown.org/jboscomendoza/r-principiantes4/rstudio-un-ide-para-r.html)
+
+Aunque podemos usar R directamente, es recomendable instalar y usar un entorno integrado de desarrollo (IDE, por sus siglas en inglés).
+
+Un IDE nos proporciona herramientas para escribir y revisar nuestro código, administrar los archivos que estamos usando, gestionar nuestro entorno de trabajo y algunas otras herramientas de productividad. 
+
+Hay varias opciones de IDE para R, y entre ellas mi preferido es [RStudio](https://www.rstudio.com/products/rstudio/), . Este entorno, además de incorporar las funciones esenciales de una IDE, es desarrollado por un equipo que ha contribuido de manera significativa para lograr que R sea lenguaje de programación más accesible, con un énfasis en la colaboración y la reproducción de los análisis.
+
+&lt;p style = 'text-align:center;'&gt;
+![R](Imagenes/featured.jpg){width='30px'}
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## ¿Por que usar [RStudio](https://bookdown.org/jboscomendoza/r-principiantes4/rstudio-un-ide-para-r.html)?
+
+Permite:
+
+
+
+     * Escribir y Editar código
+
+     * Genera y exporta gráficos 
+     
+     * Integra Sistemas de control de versiones con GIT
+     
+     * Gestiona objetos y bases de datos
+     
+     * Permite reproducibilidad de código
+     
+     * R + knitr + Markdown
+     
+
+
+
+
+
+---
+class: inverse
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+## La consola de [RStudio](https://bookdown.org/jboscomendoza/r-principiantes4/la-consola-de-r.html)
+
+
+
+**RStudio** tiene una interfaz con cuatro paneles principales.
+
+![](Imagenes/r-studio.master_1.jpg){width='200px'}
+
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## [Primeros pasos (Ejecutar y devolver)](https://bookdown.org/jboscomendoza/r-principiantes4/ejecutar-llamar-correr-y-devolver.html)
+
+
+Cuando hablamos de ejecutar nos referimos a pedir que **R** realice algo, en otras palabras, estamos dando una instrucción o una entrada.
+
+Cuando decimos que **R** nos devuelve algo, es que ha realizado algo que le hemos pedido, es decir, nos está dando una salida.
+
+Ejecutar una sóla línea de código basta con posicionarte en dicha línea y se pulsa Run o Ctrl+Enter
+
+```r
+# Instrucción
+4 + 2
+```
+
+```
+## [1] 6
+```
+
+
+
+```r
+# Instrucción
+3 * 6 
+```
+
+```
+## [1] 18
+```
+
+
+---
+class: inverse
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## [Objetos](https://bookdown.org/jboscomendoza/r-principiantes4/objetos.html)
+
+
+En R, todo es un objeto. Todos los datos y estructuras de datos son objetos. Además, todos los objetos tienen un nombre para identificarlos, en R al hablar de un objeto, estamos hablando de cualquier cosa que existe en R y que tiene un nombre.
+
+Existen 5 tipos de objetos 
+
+    - Vectores
+    
+    - Matrices
+    
+    - Listas
+    
+    - Factores
+    
+    - Data Frame
+
+A su vez cada objeto es una **variable**
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+
+## [Constantes y variables](https://bookdown.org/jboscomendoza/r-principiantes4/constantes-y-variables.html)
+
+Al igual que en el lenguaje matemático, en **R** una constante es un objeto cuyo valor no podemos cambiar, en contraste, una variable es un objeto que puede cambiar de valor.
+
+
+Por ejemplo **π y 4**, mientars que **a, b, y c**, son variables
+
+
+En R las constantes y variables tienen nombres que nos permiten hacer referencia a ellas en operaciones.
+
+Las constantes ya están establecidas por **R**, mientras que nosotros podemos crear variables, asignándoles valores a nombres.
+
+En **R** la constante π ya está definido con el nombre de **pi**
+
+```r
+pi
+```
+
+```
+## [1] 3.141593
+```
+
+
+Cuatro es una constante
+
+```r
+4
+```
+
+```
+## [1] 4
+```
+
+---
+class: inverse
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## [Constantes y variables](https://bookdown.org/jboscomendoza/r-principiantes4/constantes-y-variables.html)
+
+Son varibles
+
+```r
+a = 2
+b = pi
+```
+
+
+--
+
+
+```r
+a
+```
+
+```
+## [1] 2
+```
+
+```r
+b
+```
+
+```
+## [1] 3.141593
+```
+
+
+--
+
+Pueden tomar cualquier valor
+
+```r
+b = pi * a
+```
+
+--
+
+
+```r
+b
+```
+
+```
+## [1] 6.283185
+```
+
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+## [Tipos de datos](https://bookdown.org/jboscomendoza/r-principiantes4/constantes-y-variables.html)
+
+En R los datos pueden ser de diferentes tipos. Cada tipo tiene características particulares que lo distinguen de los demás. Entre otras cosas algunas operaciones sólo pueden realizarse con tipos de datos específicos
+
+
+
+| Tipo              | Ejemplo      | Nombre en inglés | 
+|-------------------|--------------|------------------|
+| Entero            | 2            | integer          |      
+| Numérico          | 2.8          | numeric          |
+| Cadena de texto   | "Dos"        | character        |
+| Factor            | Dos          | factor           |
+| Lógico            | TRUE o FALSE | logical          |
+| Perdido           | NA           | NA               |  
+| Perdido           | NULL         | null             |
+
+
+¿Qué tipo de dato es **b**?
+
+--
+
+
+```r
+b
+```
+
+```
+## [1] 6.283185
+```
+
+---
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-image: url(https://www.muycomputer.com/wp-content/uploads/2016/01/Ense%C3%B1a-a-tus-hijos-a-programar-con-Raspberry-Pi.jpg)
+background-size: cover
+class: center, bottom, inverse
+
+# A programar !!!!  
+
+
+---
+class: inverse, middle, center
+background-image: url(https://estudiantes.uaslp.mx/induccion/Images/EMBLEMA-AZUL-V.png)
+background-size: 60px
+background-position: 90% 8%
+
+
+# Gracias por su atención
+
+
+## https://github.com/Memo1986
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
